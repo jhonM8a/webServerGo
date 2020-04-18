@@ -18,7 +18,13 @@ func NewRouter() *Router {
 	}
 }
 
-//ServerHTTP permite responder todos los request
+//FindHandler dada una ruta retorna su handler correspondiente y si esta existe
+func (r *Router) FindHandler(path string) (http.HandlerFunc, bool) {
+	handler, exist := r.rules[path]
+	return handler, exist
+}
+
+//ServerHTTP redirigir las rutas
 func (r *Router) ServeHTTP(w http.ResponseWriter, request *http.Request) {
 	//Usa un Writer
 	fmt.Fprintf(w, "Hello World!")
