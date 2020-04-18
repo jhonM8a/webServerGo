@@ -20,6 +20,11 @@ func NewServer(port string) *Server {
 
 }
 
+//Handle asigna una ruta a un hadler creado
+func (s *Server) Handle(path string, handler http.HandlerFunc) {
+	s.router.rules[path] = handler
+}
+
 //Listen init server in port selected
 func (s *Server) Listen() error {
 	//Se define el endPoint principal
