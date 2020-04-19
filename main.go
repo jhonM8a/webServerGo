@@ -7,6 +7,6 @@ func main() {
 	server := NewServer(":8080")
 	//Se define el endPoint principal
 	server.Handle("/", HandlerRoot)
-	server.Handle("/api", server.AddMiddleware(HandlerHome, CheckAuth()))
+	server.Handle("/api", server.AddMiddleware(HandlerHome, CheckAuth(), Logging()))
 	server.Listen()
 }
