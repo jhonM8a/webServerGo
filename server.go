@@ -25,6 +25,15 @@ func (s *Server) Handle(path string, handler http.HandlerFunc) {
 	s.router.rules[path] = handler
 }
 
+//AddMiddleware añade el handler a ejecutar despues de ejecutar uno o varios middleware
+func (s *Server) AddMiddleware(f http.HandlerFunc, middlewares ...Middleware) http.HandlerFunc {
+	for _, m := range middlewares {
+		//Encadena los llamados de los middleware
+		f = m(f)
+	}
+	return f
+}
+
 //Listen init server in port selected
 func (s *Server) Listen() error {
 	//Se define el endPoint principal
