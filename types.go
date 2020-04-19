@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"encoding/json"
+	"net/http"
+)
 
 type Middleware func(http.HandlerFunc) http.HandlerFunc
 
@@ -9,7 +12,12 @@ type Metadata interface{}
 
 //User stuct de HandlerPostRequest
 type User struct {
-	Name  string
-	Email string
-	Phone string
+	Name  string `json:"name"`
+	Email string `json:"email"`
+	Phone string `json:"phone"`
+}
+
+//ToJSON convierte el struct a un slice de bytes el struct User
+func (u *User) ToJSON() ([]byte, error) {
+	return json.Marshal(u)
 }

@@ -25,3 +25,20 @@ func HandlerPostRequest(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(w, "Payload %v\n", metadata)
 }
+
+func HandlerPostUserRequest(w http.ResponseWriter, r *http.Request) {
+	decoder := json.NewDecoder(r.Body)
+	var user User
+	err := decoder.Decode(&user)
+	if err != nil {
+		fmt.Fprintf(w, "error: %v", err)
+		return
+	}
+	response, errorToJSON := user.ToJSON()
+	if errorToJSON != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
+}
