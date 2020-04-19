@@ -21,8 +21,12 @@ func NewServer(port string) *Server {
 }
 
 //Handle asigna una ruta a un hadler creado
-func (s *Server) Handle(path string, handler http.HandlerFunc) {
-	s.router.rules[path] = handler
+func (s *Server) Handle(method string, path string, handler http.HandlerFunc) {
+	_, exists := s.router.rules[path]
+	if !exists {
+		s.router.rules[path] = make(map[string]http.HandlerFunc)
+	}
+	s.router.rules[path][method] = handler
 }
 
 //AddMiddleware añade el handler a ejecutar despues de ejecutar uno o varios middleware
